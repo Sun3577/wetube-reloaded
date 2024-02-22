@@ -7,7 +7,7 @@
     "url": "(https://github.com/Sun3577/wetube-reloaded)"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon --exec babel-node src/init.js"
   },
   "author": "Yoon Seok",
   "license": "MIT",
