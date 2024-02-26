@@ -12,14 +12,20 @@ const videoSchema = new mongoose.Schema({
 });
 
 videoSchema.pre("save", async function () {
-  this.hashtags = this.hashtags[0]
+  this.hashtags = this.hashtags
+    .toString()
     .split(",")
+    .map((word) => word.toUpperCase())
+    .map((word) => word.trim())
     .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
 
 videoSchema.static("formatHashtags", function (hashtags) {
+  console.log(hashtags.split(","));
   return hashtags
     .split(",")
+    .map((word) => word.toUpperCase())
+    .map((word) => word.trim())
     .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
 
