@@ -9,14 +9,15 @@ import {
   finishGithubLogin,
 } from "../controllers/userController";
 import { get } from "mongoose";
+import { protectingMiddleware, publicOnlyMiddleware } from "../middlewares";
 
 const userRouter = express.Router();
 
-userRouter.get("/logout,", logout);
-userRouter.route("/edit").get(getEdit).post(postEdit);
+userRouter.get("/logout", protectingMiddleware, logout);
+userRouter.route("/edit").all(protectingMiddleware).get(getEdit).post(postEdit);
 userRouter.get("/remove", remove);
-userRouter.get("/github/start", startGithubLogin);
-userRouter.get("/github/finish", finishGithubLogin);
+userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
+userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 userRouter.get(":id", see);
 
 export default userRouter;
