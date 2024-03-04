@@ -179,5 +179,13 @@ export const postEdit = async (req, res) => {
   req.session.user = updatedUser;
   return res.redirect("/");
 };
+
+export const getChangePassword = (req, res) => {
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = (req, res) => {
+  return res.redirect("/");
+};
+
 export const remove = (req, res) => res.send("Remove User");
 export const see = (req, res) => res.send("See User");

@@ -7,6 +7,8 @@ import {
   logout,
   startGithubLogin,
   finishGithubLogin,
+  getChangePassword,
+  postChangePassword,
 } from "../controllers/userController";
 import { get } from "mongoose";
 import { protectingMiddleware, publicOnlyMiddleware } from "../middlewares";
@@ -15,6 +17,11 @@ const userRouter = express.Router();
 
 userRouter.get("/logout", protectingMiddleware, logout);
 userRouter.route("/edit").all(protectingMiddleware).get(getEdit).post(postEdit);
+userRouter
+  .route("/change-password")
+  .all(protectingMiddleware)
+  .get(getChangePassword)
+  .post(postChangePassword);
 userRouter.get("/remove", remove);
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
