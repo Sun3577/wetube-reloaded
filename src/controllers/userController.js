@@ -150,16 +150,34 @@ export const getEdit = (req, res) => {
 
 export const postEdit = async (req, res) => {
   const {
-    session: { user: _id },
+    session: {
+      user: { _id },
+    },
     body: { name, email, username, location },
   } = req;
-  await User.findByIdAndUpdate(_id, {
-    name,
-    email,
-    username,
-    location,
+
+  const existingUser = await User.findOne({
+    $or: [{ name }, { email }, { username }],
   });
-  return res.render("edit-profile");
+
+  if (existingUser && existingUser._id.toString() !== _id) {
+    return res.render("edit-profile", {
+      pageTitle: "Edit Profile",
+      errorMessage: "The name or email or username already exists",
+    });
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updatedUser;
+  return res.redirect("/");
 };
 export const remove = (req, res) => res.send("Remove User");
 export const see = (req, res) => res.send("See User");
