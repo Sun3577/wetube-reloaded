@@ -16,7 +16,11 @@ import { protectingMiddleware, publicOnlyMiddleware } from "../middlewares";
 const userRouter = express.Router();
 
 userRouter.get("/logout", protectingMiddleware, logout);
-userRouter.route("/edit").all(protectingMiddleware).get(getEdit).post(postEdit);
+userRouter
+  .route("/edit")
+  .all(protectingMiddleware)
+  .get(getEdit)
+  .post(uploadFiles.single("avatar"), postEdit);
 userRouter
   .route("/change-password")
   .all(protectingMiddleware)
