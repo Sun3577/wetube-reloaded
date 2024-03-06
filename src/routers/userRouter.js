@@ -13,9 +13,9 @@ import {
 import multer from "multer";
 import { get } from "mongoose";
 import {
-  uploadFiles,
   protectingMiddleware,
   publicOnlyMiddleware,
+  avatarUpload,
 } from "../middlewares";
 
 const userRouter = express.Router();
@@ -25,7 +25,7 @@ userRouter
   .route("/edit")
   .all(protectingMiddleware)
   .get(getEdit)
-  .post(uploadFiles.single("avatar"), postEdit);
+  .post(avatarUpload.single("avatar"), postEdit);
 userRouter
   .route("/change-password")
   .all(protectingMiddleware)
