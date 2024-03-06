@@ -10,8 +10,13 @@ import {
   getChangePassword,
   postChangePassword,
 } from "../controllers/userController";
+import multer from "multer";
 import { get } from "mongoose";
-import { protectingMiddleware, publicOnlyMiddleware } from "../middlewares";
+import {
+  uploadFiles,
+  protectingMiddleware,
+  publicOnlyMiddleware,
+} from "../middlewares";
 
 const userRouter = express.Router();
 
