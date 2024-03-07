@@ -220,7 +220,7 @@ export const remove = (req, res) => res.send("Remove User");
 
 export const see = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate("videos");
   if (!user) {
     return res.status(404).render("404", { pageTitle: "No User Found" });
   }
