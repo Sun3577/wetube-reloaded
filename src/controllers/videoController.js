@@ -64,13 +64,14 @@ export const postUpload = async (req, res) => {
   const {
     user: { _id },
   } = req.session;
-  const { path: videoUrl } = req.file;
+  const { video, thumb } = req.files;
   const { title, description, hashtags } = req.body;
   try {
     const newVideo = await Video.create({
       title,
       description,
-      videoUrl,
+      videoUrl: video[0].path,
+      thumbUrl: thumb[0].path,
       createdAt: Date.now(),
       hashtags: Video.formatHashtags(hashtags),
       meta: {
@@ -102,6 +103,7 @@ export const deleteVideo = async (req, res) => {
     return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   if (String(video.owner) !== String(_id)) {
+    req.flash("error", "You are not the owner of the video.");
     return res.status(403).redirect("/");
   }
   await Video.findByIdAndDelete(id);

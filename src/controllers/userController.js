@@ -141,6 +141,7 @@ export const finishGithubLogin = async (req, res) => {
 
 export const logout = (req, res) => {
   req.session.destroy();
+  req.flash("info", "Bye Bye");
   return res.redirect("/");
 };
 
@@ -184,6 +185,9 @@ export const postEdit = async (req, res) => {
 };
 
 export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    req.flash("error", "Can't Change Password.");
+  }
   return res.render("users/change-password", { pageTitle: "Change Password" });
 };
 
@@ -210,8 +214,6 @@ export const postChangePassword = async (req, res) => {
       errorMessage: "The current password is incorrect",
     });
   }
-  user.password = newPassword;
-  await user.save();
 
   if (newPassword !== newPasswordConfirmation) {
     return res.status(400).render("users/change-password", {
@@ -219,6 +221,9 @@ export const postChangePassword = async (req, res) => {
       errorMessage: "The password does not math the confirmation",
     });
   }
+  user.password = newPassword;
+  await user.save();
+  req.flash("info", "Password Updated");
   return res.redirect("/users/logout");
 };
 
