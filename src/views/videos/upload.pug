@@ -3,12 +3,14 @@ extends ../base
 block content
   div 
     video#preview
-    button#startBtn Start Recording
+    button#actionBtn Start Recording
   if errorMessage 
     span=errorMess 
   form(method="POST", enctype="multipart/form-data")
     label(for="video") Video 
     input(name="video", type="file", accept="video/*", required, id="video")
+    label(for="thumb") Thumbnail File 
+    input(name="thumb", type="file", accept="image/*", required, id="thumb")
     input(name="title", placeholder="Title", required, type="text", maxlength=80)
     input(name="description", placeholder="Description", required, type="text", minlength=10)
     input(name="hashtags", placeholder="Hashtags, separated by comma", required, type="text")
