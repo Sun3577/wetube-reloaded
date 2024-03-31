@@ -1,5 +1,6 @@
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
+const commentList = document.querySelector(".video__comment");
 
 const addComment = (text, id) => {
   const videoComments = document.querySelector(".video__comments ul");
@@ -11,7 +12,7 @@ const addComment = (text, id) => {
   const span = document.createElement("span");
   span.innerText = ` ${text}`;
   const span2 = document.createElement("span");
-  span2.innerText = " ❌  ";
+  span2.innerText = " ❌";
   newComment.appendChild(icon);
   newComment.appendChild(span);
   newComment.appendChild(span2);
@@ -40,6 +41,20 @@ const handleSubmit = async (event) => {
   }
 };
 
+const handleClickX = async (event) => {
+  const parentList = event.currentTarget.parentNode;
+  const commentId = parentList.dataset.id;
+  await fetch(`/api/comment/${commentId}`, {
+    method: "DELETE",
+  });
+  parentList.remove();
+};
+
 if (form) {
   form.addEventListener("submit", handleSubmit);
+}
+
+if (commentList) {
+  const span2 = commentList.querySelector("span:last-child");
+  span2.addEventListener("click", handleClickX);
 }
