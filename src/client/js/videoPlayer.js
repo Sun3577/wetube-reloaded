@@ -54,14 +54,17 @@ const formatTime = (seconds) =>
   new Date(seconds * 1000).toISOString().substring(14, 19);
 
 const handleLoadedMetadata = () => {
-  totalTime.innerText = formatTime(Math.floor(video.duration));
-  timeline.max = Math.floor(video.duration);
+  if (!isNaN(video.duration)) {
+    totalTime.innerText = formatTime(Math.floor(video.duration));
+    timeline.max = Math.floor(video.duration);
+  }
 };
 
 const handleTimeUpdate = () => {
   currentTime.innerText = formatTime(Math.floor(video.currentTime));
   timeline.value = Math.floor(video.currentTime);
 };
+
 const handleTimelineChange = (event) => {
   const {
     target: { value },
