@@ -2,6 +2,8 @@ import aws from "aws-sdk";
 import multer from "multer";
 import multerS3 from "multer-s3";
 
+const isHeroku = process.env.NODE_ENV === "production";
+
 const s3 = new aws.S3({
   credentials: {
     accessKeyId: process.env.AWS_ID,
@@ -9,9 +11,15 @@ const s3 = new aws.S3({
   },
 });
 
-const multerUploader = multerS3({
+const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "sun3577",
+  bucket: "sun3577/images",
+  acl: "public-read",
+});
+
+const s3VideoUploader = multerS3({
+  s3: s3,
+  bucket: "sun3577/videos",
   acl: "public-read",
 });
 
@@ -43,11 +51,11 @@ export const publicOnlyMiddleware = (req, res, next) => {
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: {},
-  storage: multerUploader,
+  storage: isHeroku ? s3ImageUploader : undefined,
 });
 
 export const videoUpload = multer({
   dest: "uploads/videos/",
   limits: {},
-  storage: multerUploader,
+  storage: isHeroku ? s3VideoUploader : undefined,
 });
